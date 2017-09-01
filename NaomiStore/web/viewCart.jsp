@@ -45,6 +45,8 @@
     </table>
     <h1 style="color: chartreuse">Total: ${totalPrice}</h1>
     <form action="MainController" method="post">
+        <input type="hidden" name="txtAccountId" value="${sessionScope.ACCOUNT.accountId}">
+        <input type="hidden" name="txtTotal" value="${totalPrice}">
         <button type="submit" name="btnControl" value="Insert Order">Check Out</button>
     </form>
 </nguyenvt:if>

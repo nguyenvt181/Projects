@@ -35,6 +35,8 @@ public class MainController extends HttpServlet {
                 url = Url.UPDATE_CART_CONTROLLER;
             } else if (action.equals("Remove Cart")) {
                 url = Url.REMOVE_CART_CONTROLLER;
+            } else if (action.equals("Insert Order")) {
+                url = Url.INSERT_ORDER_CONTROLLER;
             }
         } catch (Exception e) {
             log("Error at MainController: " + e.getMessage());

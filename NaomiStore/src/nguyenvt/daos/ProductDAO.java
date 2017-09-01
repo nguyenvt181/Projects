@@ -106,13 +106,13 @@ public class ProductDAO {
         return result;
     }
 
-    public float getUnitPrice(int id) throws Exception {
+    public float getUnitPrice(int productId) throws Exception {
         float price = 0;
         try {
             String sql = "SELECT productPrice FROM Product WHERE productId = ?";
             connection = DBConnect.connectDatabase();
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, productId);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()){
                 price = resultSet.getFloat("productPrice");
@@ -121,5 +121,37 @@ public class ProductDAO {
             DBConnect.closeConnection(resultSet, preparedStatement, connection);
         }
         return price;
+    }
+
+    public int getQuantity(int productId) throws Exception {
+        int quantity = 0;
+        try {
+            String sql = "SELECT productQuantity FROM Product WHERE productId = ?";
+            connection = DBConnect.connectDatabase();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, productId);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                quantity = resultSet.getInt("productQuantity");
+            }
+        } finally {
+            DBConnect.closeConnection(resultSet, preparedStatement, connection);
+        }
+        return quantity;
+    }
+
+    public boolean updateQuantity(int productId, int newQuantity) throws Exception {
+        boolean result;
+        try {
+            String sql = "UPDATE Product SET productQuantity = ? WHERE productId = ?";
+            connection = DBConnect.connectDatabase();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, newQuantity);
+            preparedStatement.setInt(2, productId);
+            result = preparedStatement.executeUpdate() > 0;
+        } finally {
+            DBConnect.closeConnection(resultSet, preparedStatement, connection);
+        }
+        return result;
     }
 }

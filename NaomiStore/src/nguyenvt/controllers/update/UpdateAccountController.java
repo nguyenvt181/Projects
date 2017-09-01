@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class UpdateAccountController extends HttpServlet {
@@ -30,6 +31,8 @@ public class UpdateAccountController extends HttpServlet {
                 boolean result = accountDAO.updateAccount(accountDTO);
                 if (result) {
                     url = Url.UPDATE_INFORMATION_PAGE;
+                    HttpSession session = request.getSession();
+                    session.setAttribute("ACCOUNT", accountDTO);
                     request.setAttribute("RESULT", "Update Information Successfully");
                 } else {
                     url = Url.UPDATE_INFORMATION_PAGE;
