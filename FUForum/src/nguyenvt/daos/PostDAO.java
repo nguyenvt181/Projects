@@ -84,4 +84,20 @@ public class PostDAO {
             DBConnect.closeConnection(resultSet, preparedStatement, connection);
         }
     }
+
+    public boolean updateStatus(int postId, int status) throws Exception {
+        boolean result;
+        try {
+            String sql = "UPDATE FUForum.Post SET statusId = ? WHERE postId = ?";
+            connection = DBConnect.connectDatabase();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, status);
+            preparedStatement.setInt(2, postId);
+            result = preparedStatement.executeUpdate() > 0;
+        } finally {
+            DBConnect.closeConnection(resultSet, preparedStatement, connection);
+        }
+        return result;
+    }
+
 }

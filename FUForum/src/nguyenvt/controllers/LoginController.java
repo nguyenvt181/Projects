@@ -2,8 +2,10 @@ package nguyenvt.controllers;
 
 import nguyenvt.daos.AccountDAO;
 import nguyenvt.daos.GroupDAO;
+import nguyenvt.daos.PostDAO;
 import nguyenvt.dto.AccountDTO;
 import nguyenvt.dto.GroupDTO;
+import nguyenvt.stuff.Status;
 import nguyenvt.stuff.Url;
 
 import javax.servlet.ServletException;
@@ -25,10 +27,15 @@ public class LoginController extends HttpServlet {
             if (accountDTO != null) {
                 url = Url.HOME_PAGE;
                 GroupDAO groupDAO = new GroupDAO();
+                PostDAO postDAO = new PostDAO();
                 List<GroupDTO> groupList = groupDAO.getGroupList();
+                postDAO.getPostList();
                 HttpSession session = request.getSession();
                 session.setAttribute("ACCOUNT", accountDTO);
                 session.setAttribute("GROUP", groupList);
+                session.setAttribute("POST", postDAO.getPostDTOList());
+                session.setAttribute("POSTER", postDAO.getAccountDTOList());
+                session.setAttribute("POST_GROUP", postDAO.getGroupDTOList());
             } else {
                 request.setAttribute("ERROR", "Oops! Something went wrong!");
             }

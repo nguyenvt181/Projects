@@ -7,5 +7,6 @@ public class Url {
 
     public static final String LOGIN_CONTROLLER = "LoginController";
     public static final String INSERT_POST_CONTROLLER = "InsertPostController";
+    public static final String UPDATE_STATUS_POST_CONTROLLER = "UpdateStatusController";
 
 }

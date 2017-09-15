@@ -1,7 +1,6 @@
-package nguyenvt.controllers.insert;
+package nguyenvt.controllers.update;
 
 import nguyenvt.daos.PostDAO;
-import nguyenvt.dto.PostDTO;
 import nguyenvt.stuff.Status;
 import nguyenvt.stuff.Url;
 
@@ -11,21 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-public class InsertPostController extends HttpServlet {
+public class UpdateStatusController extends HttpServlet {
     private void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String url = Url.ERROR_PAGE;
         try {
-            String title = request.getParameter("txtTitle");
-            String content = request.getParameter("txtContent");
-            int group = Integer.parseInt(request.getParameter("txtGroup"));
-            int accountId = Integer.parseInt(request.getParameter("txtAccountId"));
-            PostDTO postDTO = new PostDTO(title, content, getCurrentDate(), accountId, group, Status.REQUEST_STATUS);
+            String action = request.getParameter("btnControl");
+            int postId = Integer.parseInt(request.getParameter("txtPostId"));
             PostDAO postDAO = new PostDAO();
-            boolean result = postDAO.insertPost(postDTO);
+            boolean result = false;
+            if (action.equals("Accept Post")) {
+                result = postDAO.updateStatus(postId, Status.ACCEPT_STATUS);
+            } else if (action.equals("Decline Post")){
+                result = postDAO.updateStatus(postId, Status.ACCEPT_STATUS);
+            }
             if (result) {
                 url = Url.HOME_PAGE;
                 HttpSession session = request.getSession();
@@ -33,12 +31,10 @@ public class InsertPostController extends HttpServlet {
                 session.setAttribute("POST", postDAO.getPostDTOList());
                 session.setAttribute("POSTER", postDAO.getAccountDTOList());
                 session.setAttribute("POST_GROUP", postDAO.getGroupDTOList());
-            } else {
-                request.setAttribute("ERROR", "Oops! Something went wrong!");
             }
         } catch (Exception e) {
-            log("Error at InsertPostController: " + e.getMessage());
-            request.setAttribute("ERROR", "Oops! Something went wrong!");
+            log("Error at UpdateStatusController: " + e.getMessage());
+            request.setAttribute("ERROR", "Something went wrong!");
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
@@ -50,11 +46,5 @@ public class InsertPostController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doProcess(request, response);
-    }
-
-    private String getCurrentDate() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        Date date = new Date();
-        return dateFormat.format(date);
     }
 }
