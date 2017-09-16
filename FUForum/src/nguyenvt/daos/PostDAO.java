@@ -85,6 +85,36 @@ public class PostDAO {
         }
     }
 
+    public void getOwnPost(int accountId) throws Exception {
+        try {
+            String sql = "SELECT p.postId, p.title, p.content, p.createdDate, p.accountId, p.groupId, p.statusId, g.groupName " +
+                    "FROM FUForum.Post p " +
+                    "JOIN FUForum.Account a ON a.accountId = ? " +
+                    "JOIN FUForum.Group g ON g.groupId = p.groupId";
+            connection = DBConnect.connectDatabase();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, accountId);
+            resultSet = preparedStatement.executeQuery();
+            postDTOList = new ArrayList<>();
+            groupDTOList = new ArrayList<>();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("postId");
+                String title = resultSet.getString("title");
+                String content = resultSet.getString("content");
+                String createdDate = resultSet.getString("createdDate");
+                int groupId = resultSet.getInt("groupId");
+                int statusId = resultSet.getInt("statusId");
+                String groupName = resultSet.getString("groupName");
+                PostDTO postDTO = new PostDTO(id, title, content, createdDate, accountId, groupId, statusId);
+                GroupDTO groupDTO = new GroupDTO(groupId, groupName);
+                postDTOList.add(postDTO);
+                groupDTOList.add(groupDTO);
+            }
+        } finally {
+            DBConnect.closeConnection(resultSet, preparedStatement, connection);
+        }
+    }
+
     public boolean updateStatus(int postId, int status) throws Exception {
         boolean result;
         try {
@@ -100,4 +130,8 @@ public class PostDAO {
         return result;
     }
 
+    public boolean updatePost(PostDTO postDTO) throws Exception {
+        boolean result;
+        return false;
+    }
 }

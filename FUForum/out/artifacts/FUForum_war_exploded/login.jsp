@@ -22,7 +22,8 @@
             <td><input type="password" name="txtPassword" required></td>
         </tr>
     </table>
-    <button type="submit" name="btnControl" value="Login">Login</button>
+    <button type="submit" name="btnControl" value="Login">Login</button><br/>
+    <a href="register.jsp">Click here to register new account</a>
 </form>
 </body>
 </html>

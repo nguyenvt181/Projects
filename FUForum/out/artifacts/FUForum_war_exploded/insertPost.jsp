@@ -13,14 +13,19 @@
 </head>
 <body>
 <form action="MainController" method="post">
-    <table>
+    <h1 style="color: green">Welcome, ${sessionScope.ACCOUNT.name}</h1>
+    <button type="submit" name="btnControl" value="Logout">Log Uut</button>
+</form>
+
+<form action="MainController" method="post">
+    <table border="1">
         <tr>
             <td>Title</td>
-            <td><input type="text" name="txtTitle" required></td>
+            <td><textarea name="txtTitle" cols="30" rows="10" required></textarea></td>
         </tr>
         <tr>
             <td>Content</td>
-            <td><textarea name="txtContent" cols="100" rows="30"></textarea></td>
+            <td><textarea name="txtContent" cols="100" rows="30" required></textarea></td>
         </tr>
         <tr>
             <td>Group</td>

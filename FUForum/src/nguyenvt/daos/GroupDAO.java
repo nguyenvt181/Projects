@@ -33,4 +33,33 @@ public class GroupDAO {
         }
         return list;
     }
+
+    public boolean insertGroup(GroupDTO groupDTO) throws Exception {
+        boolean result;
+        try {
+            String sql = "INSERT INTO FUForum.Group(groupName) VALUES(?)";
+            connection = DBConnect.connectDatabase();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, groupDTO.getGroupName());
+            result = preparedStatement.executeUpdate() > 0;
+        } finally {
+            DBConnect.closeConnection(resultSet, preparedStatement, connection);
+        }
+        return result;
+    }
+
+    public boolean updateGroup(GroupDTO groupDTO) throws Exception {
+        boolean result;
+        try {
+            String sql = "UPDATE FUForum.Group SET groupName = ? WHERE groupId = ?";
+            connection = DBConnect.connectDatabase();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, groupDTO.getGroupName());
+            preparedStatement.setInt(2, groupDTO.getGroupId());
+            result = preparedStatement.executeUpdate() > 0;
+        } finally {
+            DBConnect.closeConnection(resultSet, preparedStatement, connection);
+        }
+        return result;
+    }
 }

@@ -8,9 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class AccountDAO {
-    PreparedStatement preparedStatement;
-    Connection connection;
-    ResultSet resultSet;
+    private PreparedStatement preparedStatement;
+    private Connection connection;
+    private ResultSet resultSet;
 
     public AccountDTO checkLogin(String username, String password) throws Exception {
         AccountDTO accountDTO = null;
@@ -32,5 +32,40 @@ public class AccountDAO {
             DBConnect.closeConnection(resultSet, preparedStatement, connection);
         }
         return accountDTO;
+    }
+
+    public boolean insertAccount(AccountDTO accountDTO) throws Exception {
+        boolean result;
+        try {
+            String sql = "INSERT INTO FUForum.Account(username, password, name, email, roleId) VALUES(?, ?, ?, ?, ?)";
+            connection = DBConnect.connectDatabase();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, accountDTO.getUsername());
+            preparedStatement.setString(2, accountDTO.getPassword());
+            preparedStatement.setString(3, accountDTO.getName());
+            preparedStatement.setString(4, accountDTO.getEmail());
+            preparedStatement.setInt(5, accountDTO.getRoleId());
+            result = preparedStatement.executeUpdate() > 0;
+        } finally {
+            DBConnect.closeConnection(resultSet, preparedStatement, connection);
+        }
+        return result;
+    }
+
+    public boolean updateAccount(AccountDTO accountDTO) throws Exception {
+        boolean result;
+        try {
+            String sql = "UPDATE FUForum.Account SET password = ?, name = ?, email = ? WHERE accountId = ?";
+            connection = DBConnect.connectDatabase();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, accountDTO.getPassword());
+            preparedStatement.setString(2, accountDTO.getName());
+            preparedStatement.setString(3, accountDTO.getEmail());
+            preparedStatement.setInt(4, accountDTO.getAccountId());
+            result = preparedStatement.executeUpdate() > 0;
+        } finally {
+            DBConnect.closeConnection(resultSet, preparedStatement, connection);
+        }
+        return result;
     }
 }
